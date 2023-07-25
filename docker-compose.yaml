@@ -1,9 +1,26 @@
 version: '3.1'
 
 services:
+  m1:
+    build: services/m1
+    depends_on:
+      broker:
+        condition: service_healthy
+    ports:
+      - ${APPLICATION_PORT}:3000
+  m2:
+    build: services/m2
+    depends_on:
+      broker:
+        condition: service_healthy
   broker:
     image: rabbitmq
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 5s
+      retries: 3
     restart: always
     hostname: rabbit
-    ports:
-      - 5672:5672
+    expose:
+      - 5672

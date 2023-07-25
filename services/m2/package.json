@@ -1,4 +1,11 @@
 {
+  "name": "microservice2",
+  "version": "1.0.0",
+  "description": "Second microservice",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
   "dependencies": {
     "rabbitmq-client": "^4.1.0"
   }
