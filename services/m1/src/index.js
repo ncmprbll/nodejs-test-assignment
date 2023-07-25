@@ -20,10 +20,17 @@ const server = http.createServer((req, res) => {
                 return;
             }
 
+            body.type = 'addtwonumbers';
+            const result = await rpc.send('tasks', body);
+
+            if (result.body === null || result.body === '') {
+                console.error("bad request (result body is null or there is an empty response)");
+                res.end();
+                return;
+            }
+
             res.statusCode = config.STATUS_OK;
             res.setHeader('Content-Type', 'text/plain');
-
-            const result = await rpc.send('tasks', body);
 
             res.end(result.body.toString());
         });
