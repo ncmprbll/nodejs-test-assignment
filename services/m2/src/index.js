@@ -17,13 +17,13 @@ const server = rabbit.createConsumer({
 }, async (request, reply) => {
     console.log('Request:', request);
 
-    let body = request.body
+    let body = request.body;
 
     if (body.type in handlers) {
         await handlers[body.type](body, reply);
     } else {
         await reply();
-    }
+    };
 });
 
 server.on('error', (err) => {

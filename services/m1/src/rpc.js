@@ -22,4 +22,6 @@ process.on('SIGINT', async () => {
     process.exit();
 });
 
-module.exports = rpc;
+module.exports = {
+    rpc
+};

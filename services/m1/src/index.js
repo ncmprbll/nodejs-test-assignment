@@ -1,10 +1,10 @@
 const http = require('http');
-const rpc = require('./rpc.js');
+const { rpc } = require('./rpc.js');
 const config = require('./config.js');
 
 const server = http.createServer((req, res) => {
     // I guess Express would work better here
-    if (req.url === "/tasks/addtwonumbers" && req.method === 'POST') {
+    if (req.url === "/tasks/double" && req.method === 'POST') {
         let body = [];
 
         res.statusCode = config.STATUS_BAD_REQUEST;
@@ -12,16 +12,14 @@ const server = http.createServer((req, res) => {
         req.on('data', (chunk) => {
             body.push(chunk);
         }).on('end', async () => {
-            try {
-                body = JSON.parse(Buffer.concat(body).toString());
-            } catch (error) {
-                console.error(error);
-                res.end();
-                return;
-            }
+            body = Buffer.concat(body).toString();
 
-            body.type = 'addtwonumbers';
-            const result = await rpc.send('tasks', body);
+            let json = {
+                'number': body,
+                'type': 'double'
+            };
+
+            const result = await rpc.send('tasks', json);
 
             if (result.body === null || result.body === '') {
                 console.error("bad request (result body is null or there is an empty response)");
